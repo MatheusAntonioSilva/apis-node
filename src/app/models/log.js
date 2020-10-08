@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const connectionString = 'mongodb+srv://teste:teste@cluster0.dlvlz.mongodb.net/logs?retryWrites=true&w=majority'
+const conn = mongoose.createConnection(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 
-const logSchema = new Schema({
-  message: String
-})
+const logSchema = new mongoose.Schema({ message: String })
 
-module.exports = mongoose.model('Log', logSchema)
+module.exports = conn.model('developments', logSchema)

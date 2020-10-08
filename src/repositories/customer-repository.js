@@ -1,4 +1,7 @@
 const Customer = require('../app/models/customer')
+const jwt = require('jsonwebtoken')
+
+require('dotenv-safe').config()
 
 exports.create = async(data) => {
   const customer = new Customer()
@@ -18,3 +21,17 @@ exports.update = async(id, data) => { return await Customer.findOneAndUpdate(id,
 
 exports.delete = async(id) => { return await Customer.findByIdAndRemove(id) }
 
+exports.login = async(email, password) => {
+  const customer = await Customer.findOne({ email: email })
+
+  const id = customer._id
+
+  if(customer && customer.validPassword(password)) {
+    console.log('isss')
+
+    return jwt.sign({ id }, process.env.SECRET, { expiresIn: 60 })
+  } else {
+    throw ({ status: 403, code: 'Bad Request', message: 'Usuário não encontrado!' })
+  }
+
+}

@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 
 exports.generateToken = async(data) => { 
-  return jwt.sign(data, global.SALT_KEY, { expiresIn: '1d' })
+  return jwt.sign(data, process.env.SECRET, { expiresIn: '1d' })
 }
 
 exports.decodeToken = async(token) => {
-  return await jwt.verify(token, global.SALT_KEY)
+  return await jwt.verify(token, process.env.SECRET)
 }
 
 exports.authorize = async(req, res, next) => {
@@ -13,7 +13,7 @@ exports.authorize = async(req, res, next) => {
 
   if(!token) { return res.status(401).json({ message: 'Acesso negado!' }) }
 
-  jwt.verify(token, global.SALT_KEY, function(error, decode) {
+  jwt.verify(token, process.env.SECRET, function(error, decode) {
     if(error) { return res.status(401).json({ message: 'Token Inválido', error: error }) }
 
     next()
