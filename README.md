@@ -32,3 +32,11 @@ DELETE /products/:productId
 GET /logs
 GET /logs/:logId
 ```
+
+### Autenticação
+
+```POST
+/auths
+```
+
+- Autenticado com sucesso passar **x-access-token** com seu token no `headers`
